@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="with=device-width, initial-scale=1.0">
+    <title>Localisation IoT</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+          rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.10.2/qs.min.js" integrity="sha512-ErYZLDi4WRoox2JhOIADWBydTRhMJ0KIXnv5C1GvuY8YooLGapnebaM3iRGhwS6/E9ONXj0MRXp6bhu73sdFkg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/fontawesome.min.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script type="text/javascript" src="scripts/webSocket.js"></script>
+
+    <script type="text/javascript" src="scripts/tags.js"></script>
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+</head>
+
+<body>
+<section class="sub-header">
+    <nav>
+        <a href="index.html"><img src="images/hes.jpg"></a>
+        <div class="nav-links" id="navLinks">
+            <i class="fa fa-times" onclick="hideMenu()"></i>
+            <ul>
+                <li><a href="index.html">HOME</a></li>
+                <li><a href="tagFinder.html">TAG FINDER</a></li>
+                <li><a href="about.html">ABOUT</a></li>
+                <li><a href="">CONTACT</a></li>
+            </ul>
+        </div>
+        <i class="fa fa-bars" onclick="showMenu()"></i>
+    </nav>
+    <div class="title">
+        <h1>Tag Finder</h1>
+    </div>
+</section>
+
+<!---------Tag Finder -------->
+
+<section class="tag-finder">
+    <div class="row">
+        <div class="finder-col">
+            <div class="page-title">
+                <h1>Tag location on the campus</h1>
+                <div class="status" id="connectionMessage"></div>
+            </div>
+            <p>You can visualize the location of the tags on a map. Choose the floor to display:</p>
+        </div>
+
+        <div class="finder-col input-group">
+            <span>Select tags</span>
+            <select name="states[]" multiple="multiple" id="selectTags">
+            </select>
+        </div>
+
+        <div class="finder-col input-group inline">
+            <input type="radio" name="filter" id="selectLiveTracking" checked>
+            <label for="choice-yes">Live tracking</label>
+        </div>
+
+        <div class="finder-col input-group inline">
+            <input type="radio" name="filter" id="selectSpecificTime">
+            <label for="choice-yes">Specific time</label>
+
+            <input type="text" class="form-group disable" style="margin-left: 10px;" id="inputSpecificTime">
+            <small style="margin-left: 10px">Format example: -1h | -30m | -5s</small>
+        </div>
+
+
+        <div class="finder-col input-group">
+            <span>Select beacons</span>
+            <select name="states[]" multiple="multiple" id="selectBeacons">
+            </select>
+        </div>
+
+        <div class="finder-col plan">
+            <img src="images/FloorN3.jpeg" id="floorMap">
+
+            <div class="elements" id="planElementsContainer"></div>
+        </div>
+
+       <!-- <div class="nav-floors" id="navFloors">
+            <a class="buttonRi" id="btnRi" onclick="switchFloor(0)">Ri</a>
+            <a class="buttonN1" id="btn1" onclick="switchFloor(1)">N1</a>
+            <a class="buttonN2" id="btn2" onclick="switchFloor(2)">N2</a>
+            <a class="buttonN3" id="btn3" onclick="switchFloor(3)">N3</a>
+        </div>
+
+        <div class="add-remove-tag" id="addRemove">
+            <button name="addButton" type="button" id="addBtn" onclick="addTag()">Add</button>
+            <button name="removeButton" type="button" id="removeBtn" onclick="removeTag()">Remove</button>
+        </div>
+
+        <div class="switchDisplay">
+            <button name="swDisp" type="button" id="disBtn" onClick="switchDisplay()">History</button>
+        </div>-->
+
+    </div>
+</section>
+
+
+
+<!-----------------------------------------------------JavaScript------------------------------------------------>
+<script>
+
+    window.addEventListener("load", connect, false);
+
+
+    //Variables from id
+    var floorMap = document.getElementById("floorMap");
+    var navLinks = document.getElementById("navLinks");
+    var btnRi = document.getElementById("btnRi");
+    var btn1 = document.getElementById("btn1");
+    var btn2 = document.getElementById("btn2");
+    var btn3 = document.getElementById("btn3");
+    var inputField = document.getElementById("tagSearch");	//text entered in input field
+    var checkList = document.getElementById("tag-list");
+    var c0 = document.getElementById("tag0");			//Get tag dot
+    var c1 = document.getElementById("tag1");
+    var c2 = document.getElementById("tag2");
+
+    var optionList = document.getElementById("thechecklist");
+
+    var currentFloor = 3;				//indicates the current floor
+    var mov = "1650";					//tag dot new coordinate test
+    var tagArray = [];					//List of all created tag
+    var listCounter = 0;
+    var displayMode = true;				//true = tracking, false = history
+
+    var id7 = document.getElementById("id7");
+
+
+    //Select tags checklist
+    checkList.getElementsByClassName('anchor')[0].onclick = function (evt) {
+        if (checkList.classList.contains('visible'))
+            checkList.classList.remove('visible');
+        else
+            checkList.classList.add('visible');
+    }
+
+
+    //Add a new tag in the list
+    function addTag() {
+        var txtInput = document.getElementById("tagSearch").value;
+        const index = tagArray.indexOf(txtInput);
+
+        var conMes = document.getElementById("connectionMessage");
+
+        //-1 returned if already present
+        if (index == -1) {
+            tagArray.push(txtInput);
+            inputField.value = "";
+            inputField.value = id7.id;
+            listCounter++;				//Add the entry in the checklist options
+            optionList.innerHTML += "<li><input type=\"checkbox\" />" + txtInput + "</li>";
+        } else {
+            inputField.value = "Already added";
+            inputField.value = id7.id;
+            id7.t
+        }
+    }
+
+    //Remove a tag from the list
+    function removeTag() {
+        var txtInput = document.getElementById("tagSearch").value;
+        const index = tagArray.indexOf(txtInput);  //return -1 if not contained in array
+
+        if (index >= 0) {
+            tagArray.splice(index, 1);
+            listCounter--;
+        } else if (index == -1) {
+            inputField.value = "Not present"
+        }
+    }
+
+
+    //Actions on floor buttons clicks
+    //b: the floor pressed
+    //return: none
+    function switchFloor(b) {
+
+        switch (b) {
+            case 0:
+                floorMap.src = "images/campusFloorRi.jpeg";
+                currentFloor = 0;
+
+                btnRi.style.color = "#A2D4DF";
+                btn1.style.color = "#000";
+                btn2.style.color = "#000";
+                btn3.style.color = "#000";
+
+                c0.style.visibility = "hidden";
+                c1.style.visibility = "hidden";
+                break;
+            case 1:
+                floorMap.src = "images/campusFloorN1.jpeg";
+                currentFloor = 1;
+
+                btnRi.style.color = "#000";
+                btn1.style.color = "#A2D4DF";
+                btn2.style.color = "#000";
+                btn3.style.color = "#000";
+
+                c0.style.visibility = "hidden";
+                c1.style.visibility = "hidden";
+
+                break;
+            case 2:
+                floorMap.src = "images/campusFloorN2.jpeg";
+                currentFloor = 2;
+
+                btnRi.style.color = "#000";
+                btn1.style.color = "#000";
+                btn2.style.color = "#A2D4DF";
+                btn3.style.color = "#000";
+
+                c0.style.visibility = "hidden";
+                c1.style.visibility = "visible";
+                break;
+            case 3:
+                floorMap.src = "images/FloorN3.jpeg";
+                currentFloor = 3;
+
+                btnRi.style.color = "#000";
+                btn1.style.color = "#000";
+                btn2.style.color = "#000";
+                btn3.style.color = "#A2D4DF";
+
+                c0.style.visibility = "visible";		//Hide/show tag
+                c0.style.left = mov + "px";				//Change tag coordinates
+                c1.style.visibility = "hidden";			//A enlever plus tard
+                break;
+            default:
+                floorMap.src = "images/campusFloorRi.jpeg";
+        }
+    }
+
+
+    //Show side menu when in app mode
+    function showMenu() {
+        navLinks.style.right = "0";
+        floorMap.src = "images/campusFloorRi.jpeg";
+    }
+
+    //Hide side menu when in app mode
+    function hideMenu() {
+        navLinks.style.right = "-200px";
+    }
+
+    //Switches de display between history or live tracking
+    function switchDisplay() {
+        var dispBtn = document.getElementById("disBtn");
+
+        if (dispBtn.innerHTML == "Tracking") {
+            dispBtn.innerHTML = "History";
+            displayMode = false;
+        } else {
+            dispBtn.innerHTML = "Tracking";
+            displayMode = true;
+        }
+    }
+
+</script>
+
+</body>
+
+</html>
