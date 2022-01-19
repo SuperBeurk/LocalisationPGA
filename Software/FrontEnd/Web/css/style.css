@@ -24,6 +24,15 @@ nav img {
     width: 300px;
 }
 
+.container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.container .finder-col {
+    flex-basis: 45%;
+}
+
 .nav-links {
     flex: 1;
     text-align: right;
