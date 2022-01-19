@@ -69,8 +69,8 @@ window.addEventListener("DOMContentLoaded", e => {
             div.style.left = calcPosX + "%";
 
             //Largeur
-            //11m qui doivent aller de 0% à 49% ==> posY * 49/11 = 4.5
-            var calcPosY = tag.posY * 4.5;
+            //10.3m qui doivent aller de 0% à 49% ==> posY * 49/10.3 = 4.7
+            var calcPosY = tag.posY * 4.7;
             if (calcPosY > 49) {
                 calcPosY = 49;
             }
@@ -136,14 +136,14 @@ window.addEventListener("DOMContentLoaded", e => {
                         //Longueur
                         //11.30m qui doivent aller de 29.6% à 41.2% en largeur ==>posX * 1.03 +29.6
                         var calcPosX = position.posX * 1.03 + 29.6;
-                        if (calcPosX > 42.2) {
-                            calcPosX = 42.2;
+                        if (calcPosX > 41.2) {
+                            calcPosX = 41.2;
                         }
                         tagNode.style.left = calcPosX + "%";
 
                         //Largeur
-                        //11m qui doivent aller de 0% à 49% ==> posY * 49/11 = 4.5
-                        var calcPosY = position.posY * 4.5;
+                        //10.3m qui doivent aller de 0% à 49% ==> posY * 49/10.3 = 4.7
+                        var calcPosY = position.posY * 4.7;
                         if (calcPosY > 49) {
                             calcPosY = 49;
                         }
@@ -181,14 +181,14 @@ window.addEventListener("DOMContentLoaded", e => {
                     //Longueur
                     //11.30m qui doivent aller de 29.6% à 41.2% en largeur ==>posX * 1.03 +29.6
                     var calcPosX = tag.posX * 1.03 + 29.6;
-                    if (calcPosX > 42.2) {
-                        calcPosX = 42.2;
+                    if (calcPosX > 41.2) {
+                        calcPosX = 41.2;
                     }
                     tagsNode[tag.id].style.left = calcPosX + "%";
 
                     //Largeur
-                    //11m qui doivent aller de 0% à 49% ==> posY * 49/11 = 4.5
-                    var calcPosY = tag.posY * 4.5;
+                    //10.3m qui doivent aller de 0% à 49% ==> posY * 49/10.3 = 4.7
+                    var calcPosY = tag.posY * 4.7;
                     if (calcPosY > 49) {
                         calcPosY = 49;
                     }
@@ -200,7 +200,7 @@ window.addEventListener("DOMContentLoaded", e => {
                 }
             });
         });
-    }, 500);
+    }, 300);
 
     selectLiveTracking.addEventListener("change", () => {
         const liveTrackingRequest = () => {
@@ -225,14 +225,14 @@ window.addEventListener("DOMContentLoaded", e => {
                         //Longueur
                         //11.30m qui doivent aller de 29.6% à 41.2% en largeur ==>posX * 1.03 +29.6
                         var calcPosX = tag.posX * 1.03 + 29.6;
-                        if (calcPosX > 42.2) {
-                            calcPosX = 42.2;
+                        if (calcPosX > 41.2) {
+                            calcPosX = 41.2;
                         }
                         tagsNode[tag.id].style.left = calcPosX + "%";
 
                         //Largeur
-                        //11m qui doivent aller de 0% à 49% ==> posY * 49/11 = 4.5
-                        var calcPosY = tag.posY * 4.5;
+                        //10.3m qui doivent aller de 0% à 49% ==> posY * 49/10.3 = 4.7
+                        var calcPosY = tag.posY * 4.7;
                         if (calcPosY > 49) {
                             calcPosY = 49;
                         }
@@ -248,7 +248,7 @@ window.addEventListener("DOMContentLoaded", e => {
 
         intervalLiveTracking = setInterval(() => {
             liveTrackingRequest();
-        }, 500);
+        }, 300);
         liveTrackingRequest();
 
         selectedFilter = 1
@@ -278,14 +278,14 @@ window.addEventListener("DOMContentLoaded", e => {
                 //Longueur
                 //11.30m qui doivent aller de 29.6% à 41.2% en largeur ==>posX * 1.03 +29.6
                 var calcPosX = beacon.posX * 1.03 + 29.6;
-                if (calcPosX > 42.2) {
-                    calcPosX = 42.2;
+                if (calcPosX > 41.2) {
+                    calcPosX = 41.2;
                 }
                 div.style.left = calcPosX + "%";
 
                 //Largeur
-                //11m qui doivent aller de 0% à 49% ==> posY * 49/11 = 4.5
-                var calcPosY = beacon.posY * 4.5;
+                //10.3m qui doivent aller de 0% à 49% ==> posY * 49/10.3 = 4.7
+                var calcPosY = beacon.posY * 4.7;
                 if (calcPosY > 49) {
                     calcPosY = 49;
                 }
