@@ -3,11 +3,11 @@
 #include <HTTPClient.h>
 #include <Arduino_JSON.h>
 
-const char* ssid = "iPhone";
-const char* password = "Raphael58";
+const char* ssid = "RT-AC68U";
+const char* password = "ASUS_HEI";
 
 //Your Domain name with URL path or IP address with path
-const char* serverName = "http://172.20.10.11/tags/update/positions";
+const char* serverName = "http://192.168.2.176/tags/update/positions";
 
 char incomingByte;
 String frame = "";
@@ -46,7 +46,7 @@ void clearSerialBuffer(){
 void createJsonFrame()
 {
   delimitedFrame = strtok((char*)frame.c_str(),":m");
-  frameJson="{\"tagId\":1,\"BeaconDetected\":[";
+  frameJson="{\"tagId\":0,\"BeaconDetected\":[";
   while ( delimitedFrame )
   {
       if((x != 0) && ((x%2) == 0))

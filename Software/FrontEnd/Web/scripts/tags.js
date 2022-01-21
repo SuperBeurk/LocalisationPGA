@@ -30,14 +30,14 @@ const Beacons = {
             //Longueur
             //11.30m qui doivent aller de 29.6% à 41.2% en largeur ==>posX * 1.03 +29.6
             var calcPosX = beacon.posX * 1.03 + 29.6;
-            if (calcPosX > 42.2) {
-                calcPosX = 42.2;
+            if (calcPosX > 41.2) {
+                calcPosX = 41.2;
             }
             div.style.left = calcPosX + "%";
 
             //Largeur
             //11m qui doivent aller de 0% à 49% ==> posY * 49/11 = 4.5
-            var calcPosY = beacon.posY * 4.5;
+            var calcPosY = beacon.posY * 4.7;
             if (calcPosY > 49) {
                 calcPosY = 49;
             }
@@ -45,6 +45,22 @@ const Beacons = {
             div.style.visibility = "hidden";
         } else if (beacon.room === 1)//319
         {
+            //Longueur
+            //11.30m qui doivent aller de 29.6% à 41.2% en largeur ==>posX * 1.03 +29.6
+            var calcPosX = beacon.posX * 1.03 + 41.2;
+            if (calcPosX > 50.5) {
+                calcPosX = 50.5;
+            }
+            div.style.left = calcPosX + "%";
+
+            //Largeur
+            //11m qui doivent aller de 0% à 49% ==> posY * 49/11 = 4.5
+            var calcPosY = beacon.posY * 4.7;
+            if (calcPosY > 49) {
+                calcPosY = 49;
+            }
+            div.style.bottom = calcPosY + "%";
+            div.style.visibility = "hidden";
 
         }
 
@@ -69,20 +85,36 @@ const Tags = {
             //Longueur
             //11.30m qui doivent aller de 29.6% à 41.2% en largeur ==>posX * 1.03 +29.6
             var calcPosX = tag.posX * 1.03 + 29.6;
-            if (calcPosX > 42.2) {
-                calcPosX = 42.2;
+            if (calcPosX > 41.2) {
+                calcPosX = 41.2;
             }
             div.style.left = calcPosX + "%";
 
             //Largeur
             //11m qui doivent aller de 0% à 49% ==> posY * 49/11 = 4.5
-            var calcPosY = tag.posY * 4.5;
+            var calcPosY = tag.posY * 4.7;
             if (calcPosY > 49) {
                 calcPosY = 49;
             }
             div.style.bottom = calcPosY + "%";
             div.style.visibility = "hidden";
         } else if (tag.room === 1) {
+            //Longueur
+            //11.30m qui doivent aller de 29.6% à 41.2% en largeur ==>posX * 1.03 +29.6
+            var calcPosX = tag.posX * 1.03 + 41.2;
+            if (calcPosX > 50.5) {
+                calcPosX = 50.5;
+            }
+            div.style.left = calcPosX + "%";
+
+            //Largeur
+            //11m qui doivent aller de 0% à 49% ==> posY * 49/11 = 4.5
+            var calcPosY = tag.posY * 4.7;
+            if (calcPosY > 49) {
+                calcPosY = 49;
+            }
+            div.style.bottom = calcPosY + "%";
+            div.style.visibility = "hidden";
         } //319
 
         return div;
@@ -170,14 +202,14 @@ window.addEventListener("DOMContentLoaded", e => {
                         //Longueur
                         //11.30m qui doivent aller de 29.6% à 41.2% en largeur ==>posX * 1.03 +29.6
                         var calcPosX = position.posX * 1.03 + 29.6;
-                        if (calcPosX > 42.2) {
-                            calcPosX = 42.2;
+                        if (calcPosX > 41.2) {
+                            calcPosX = 41.2;
                         }
                         tagNode.style.left = calcPosX + "%";
 
                         //Largeur
                         //11m qui doivent aller de 0% à 49% ==> posY * 49/11 = 4.5
-                        var calcPosY = position.posY * 4.5;
+                        var calcPosY = position.posY * 4.7;
                         if (calcPosY > 49) {
                             calcPosY = 49;
                         }
@@ -185,7 +217,22 @@ window.addEventListener("DOMContentLoaded", e => {
                         tagNode.style.visibility = "visible";
                     } else if (tag.room === 1)//319
                     {
+                        //Longueur
+                        //11.30m qui doivent aller de 29.6% à 41.2% en largeur ==>posX * 1.03 +29.6
+                        var calcPosX = position.posX * 1.03 + 41.2;
+                        if (calcPosX > 50.5) {
+                            calcPosX = 50.5;
+                        }
+                        tagNode.style.left = calcPosX + "%";
 
+                        //Largeur
+                        //11m qui doivent aller de 0% à 49% ==> posY * 49/11 = 4.5
+                        var calcPosY = position.posY * 4.7;
+                        if (calcPosY > 49) {
+                            calcPosY = 49;
+                        }
+                        tagNode.style.bottom = calcPosY + "%";
+                        tagNode.style.visibility = "visible";
                     }
                 });
             });
@@ -216,14 +263,14 @@ window.addEventListener("DOMContentLoaded", e => {
                     //Longueur
                     //11.30m qui doivent aller de 29.6% à 41.2% en largeur ==>posX * 1.03 +29.6
                     var calcPosX = tag.posX * 1.03 + 29.6;
-                    if (calcPosX > 42.2) {
-                        calcPosX = 42.2;
+                    if (calcPosX > 41.2) {
+                        calcPosX = 41.2;
                     }
                     Tags.liveTracking.nodes[tag.id].style.left = calcPosX + "%";
 
                     //Largeur
                     //11m qui doivent aller de 0% à 49% ==> posY * 49/11 = 4.5
-                    var calcPosY = tag.posY * 4.5;
+                    var calcPosY = tag.posY * 4.7;
                     if (calcPosY > 49) {
                         calcPosY = 49;
                     }
@@ -231,7 +278,22 @@ window.addEventListener("DOMContentLoaded", e => {
                     Tags.liveTracking.nodes[tag.id].style.visibility = "visible";
                 } else if (tag.room === 1)//319
                 {
+                    //Longueur
+                    //11.30m qui doivent aller de 29.6% à 41.2% en largeur ==>posX * 1.03 +29.6
+                    var calcPosX = tag.posX * 1.03 + 41.2;
+                    if (calcPosX > 50.5) {
+                        calcPosX = 50.5;
+                    }
+                    Tags.liveTracking.nodes[tag.id].style.left = calcPosX + "%";
 
+                    //Largeur
+                    //11m qui doivent aller de 0% à 49% ==> posY * 49/11 = 4.5
+                    var calcPosY = tag.posY * 4.7;
+                    if (calcPosY > 49) {
+                        calcPosY = 49;
+                    }
+                    Tags.liveTracking.nodes[tag.id].style.bottom = calcPosY + "%";
+                    Tags.liveTracking.nodes[tag.id].style.visibility = "visible";
                 }
             });
         });
@@ -305,14 +367,14 @@ window.addEventListener("DOMContentLoaded", e => {
                         //Longueur
                         //11.30m qui doivent aller de 29.6% à 41.2% en largeur ==>posX * 1.03 +29.6
                         var calcPosX = tag.posX * 1.03 + 29.6;
-                        if (calcPosX > 42.2) {
-                            calcPosX = 42.2;
+                        if (calcPosX > 41.2) {
+                            calcPosX = 41.2;
                         }
                         Tags.liveTracking.nodes[tag.id].style.left = calcPosX + "%";
 
                         //Largeur
                         //11m qui doivent aller de 0% à 49% ==> posY * 49/11 = 4.5
-                        var calcPosY = tag.posY * 4.5;
+                        var calcPosY = tag.posY * 4.7;
                         if (calcPosY > 49) {
                             calcPosY = 49;
                         }
@@ -320,7 +382,22 @@ window.addEventListener("DOMContentLoaded", e => {
                         Tags.liveTracking.nodes[tag.id].style.visibility = "visible";
                     } else if (tag.room === 1)//319
                     {
+                        //Longueur
+                        //11.30m qui doivent aller de 29.6% à 41.2% en largeur ==>posX * 1.03 +29.6
+                        var calcPosX = tag.posX * 1.03 + 41.2;
+                        if (calcPosX > 50.5) {
+                            calcPosX = 50.5;
+                        }
+                        Tags.liveTracking.nodes[tag.id].style.left = calcPosX + "%";
 
+                        //Largeur
+                        //11m qui doivent aller de 0% à 49% ==> posY * 49/11 = 4.5
+                        var calcPosY = tag.posY * 4.7;
+                        if (calcPosY > 49) {
+                            calcPosY = 49;
+                        }
+                        Tags.liveTracking.nodes[tag.id].style.bottom = calcPosY + "%";
+                        Tags.liveTracking.nodes[tag.id].style.visibility = "visible";
                     }
                 });
             });

@@ -5,7 +5,8 @@ const {Point} = require("@influxdata/influxdb-client");
 const {myOrg, myClient} = require("../database");
 const {reject} = require("delay");
 require("./function");
-const {writeBeaconPosition} = require("./function");
+const {writeBeaconPosition, queryBeacon} = require("./function");
+var arraySort = require('array-sort');
 
 exports.getHistory = async (req,res,next) =>{
     var myJsonFrame = "{\"TagHistory\": [{\"tag1\": [{\"id\":0,\"posX\":10,\"posY\":8,\"room\":0},{\"id\":0,\"posX\":7,\"posY\":5,\"room\":0}], \"tag2\": [{\"id\":1,\"posX\":4,\"posY\":4,\"room\":0},{\"id\":1,\"posX\":2,\"posY\":1,\"room\":0}]}]}"
@@ -56,14 +57,32 @@ exports.getAll = async (req, res, next) => {
 
 exports.updatePositions = async (req, res, next) => {
     //Regarde si les beacons sont dans la même pièce si oui ==> eligible au calcul
-    console.log(req.body);
-    if(req.body.BeaconDetected.length == 2)
+    var startCalc = false;
+    var temp = [];
+    for(var i = 0; i < req.body.BeaconDetected.length;i++)
     {
-        var b0 = await method.queryBeacon(req.body.BeaconDetected[0].id,'2018-05-22T23:30:00Z',true);
-        var b1 = await method.queryBeacon(req.body.BeaconDetected[1].id,'2018-05-22T23:30:00Z',true);
+        temp[i] = req.body.BeaconDetected[i];
+    }
+    if(req.body.BeaconDetected.length == 3)
+    {
+       //Sort ascending
+        temp = arraySort(temp,'id');
+        if(temp[0].id%2 == 1)//Impair
+        {
+            var temp2 = temp[0];
+            temp[0] = temp[2];
+            temp[2] = temp2;
+        }
+        startCalc = true;
+    }
+    else if(req.body.BeaconDetected.length == 2){startCalc = true;}
+    if(startCalc == true)
+    {
+        var b0 = await method.queryBeacon(temp[0].id,'2018-05-22T23:30:00Z',true);
+        var b1 = await method.queryBeacon(temp[1].id,'2018-05-22T23:30:00Z',true);
         if(b0[1][2] == b0[1][2])
         {
-            var newPos = method.algorithmPosition(req.body.BeaconDetected[0].dist,req.body.BeaconDetected[1].dist,b0[1][0],b0[1][1],b1[1][0],b1[1][1]);
+            var newPos = method.algorithmPosition(temp[0].dist,temp[1].dist,b0[1][0],b0[1][1],b1[1][0],b1[1][1]);
             console.table(newPos);
             method.writeTagPosition(req.body.tagId,newPos[0],newPos[1],b0[1][2]);
         }

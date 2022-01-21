@@ -32,9 +32,8 @@ npm run start
 ### 4. Open the web page
 ```bash
 cd LocalisationPGA\Software\FrontEnd\Web
+.\tagFinder.html
 ```
-- Open one of the .html file
-- Go to Tag Finder
 ### 5. Plug in your All your Tag and Beacon Device
 - You can now see the tag moving on the web page.
 

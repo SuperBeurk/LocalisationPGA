@@ -11,6 +11,7 @@
   "dependencies": {
     "@influxdata/influxdb-client": "^1.21.0",
     "@influxdata/influxdb-client-apis": "^1.21.0",
+    "array-sort": "^1.0.0",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "delay": "^5.0.0",
