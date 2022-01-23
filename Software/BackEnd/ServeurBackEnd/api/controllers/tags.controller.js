@@ -101,12 +101,19 @@ exports.updatePositions = async (req, res, next) => {
             //Calcul de la nouvelle position et stockage de l'information dans la database
             var newPos = method.algorithmPosition(temp[0].dist,temp[1].dist,b0[1][0],b0[1][1],b1[1][0],b1[1][1]);
             console.table(newPos);
-            method.writeTagPosition(req.body.tagId,newPos[0],newPos[1],b0[1][2]);
+            if (newPos)
+            {
+                method.writeTagPosition(req.body.tagId,newPos[0],newPos[1],b0[1][2]);
+                res.status(200).json({
+                    status: "success"
+                });
+            }
+            next(new Error("no intersection"));
         }
+        next(new Error("not in the same room"));
     }
-    res.status(200).json({
-        status: "success"
-    });
+    next(new Error("not 2 beacon"));
+
 };
 
 

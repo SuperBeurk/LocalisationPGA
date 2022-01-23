@@ -155,7 +155,7 @@ module.exports = {
         //On regarde si on arrive à déterminer une localisation ou non
         if((distTwoCircle-radSum)>0)
         {
-            console.log("no intersection");
+            return null; //return
         }
         else
         {

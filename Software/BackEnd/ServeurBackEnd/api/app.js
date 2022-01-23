@@ -21,6 +21,13 @@ database.connect().then(() => {
     // Routes
     app.use("/", appRoutes);
 
+    // Error handling
+    app.use((err, req, res, next) => {
+        return AppError({
+            message: err.toString()
+        }, req, res, next);
+    });
+
     // handle undefined Routes
     app.use("*", (req, res, next) => {
         console.log("mauvais lien");
