@@ -4,6 +4,7 @@ const router = express.Router();
 const tagsController = require('../controllers/tags.controller');
 const beaconsController = require('../controllers/beacons.controller');
 
+//Définir toutes les routes de notre projet
 router.get("/beacons", beaconsController.getAll);
 router.get("/tags", tagsController.getAll);
 router.get("/tags/get/positions",tagsController.liveTracking);

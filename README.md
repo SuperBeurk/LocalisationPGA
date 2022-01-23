@@ -4,6 +4,7 @@
 
 - Node.js
 - InfluxDB
+- Connect your computer to the RT-AC68U wifi
 
 ## Getting started
 
@@ -23,9 +24,12 @@ npm install
 ```bash
 .\influxd.exe
 ```
-
+### 2.5 Add existing tags and beacons to db (if you don't have them)
+```bash
+cd LocalisationPGA/Software/BackEnd/ServeurBackEnd/api
+npm run configDB.js
+```
 ### 3. Run the solution
-
 ```bash
 npm run start
 ```
@@ -34,8 +38,6 @@ npm run start
 cd LocalisationPGA\Software\FrontEnd\Web
 .\tagFinder.html
 ```
-### 5. Plug in your All your Tag and Beacon Device
+### 5. Test
+- Plug all your tags and beacons
 - You can now see the tag moving on the web page.
-
-
-

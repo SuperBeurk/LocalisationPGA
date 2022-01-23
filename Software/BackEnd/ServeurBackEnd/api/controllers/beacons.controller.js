@@ -5,7 +5,9 @@ const {Point} = require("@influxdata/influxdb-client");
 const {myOrg, myClient} = require("../database");
 const {reject} = require("delay");
 require("./function");
-
+/*
+    Méthode visant à récupérer tous les beacons existants dans la database et à les envoyer en réponse.
+ */
 exports.getAll = async (req, res, next) => {
     var retVal = [];
     var myJsonFrame= "{\"Beacons\":[";

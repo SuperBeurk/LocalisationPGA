@@ -1,5 +1,9 @@
 const method = require("./controllers/function");
 const db = require("./database");
+/*
+    Ce fichier permet de créer nos tags et beacons dans la database
+ */
+
 method.writeBeaconPosition(0,0,0,0);
 method.writeBeaconPosition(1,11.3,0,0);
 method.writeBeaconPosition(2,0,0,1);

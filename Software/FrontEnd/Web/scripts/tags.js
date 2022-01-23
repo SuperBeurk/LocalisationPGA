@@ -254,9 +254,9 @@ window.addEventListener("DOMContentLoaded", e => {
             Tags.history.hideAllNodes();
             Tags.liveTracking.showAllNodes();
 
-            Tags.liveTracking.nodes.forEach(tagNode => {
+            /*Tags.liveTracking.nodes.forEach(tagNode => {
                 tagNode.style.visibility = "hidden";
-            });
+            });*/
             response.data.Tags.forEach(tag => {
                 if (tag.room === 0)//320
                 {
