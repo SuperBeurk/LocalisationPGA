@@ -204,23 +204,6 @@ nav .fa {
     align-items: center;
 }
 
-.tag-finder .page-title .status {
-    margin-left: 10px;
-    background: #d4d4d4;
-    border: 1px solid #afafaf;
-    padding: 5px;
-    border-radius: 5px;
-    font-size: 10px;
-}
-
-.tag-finder .page-title .status.success {
-    color: green;
-}
-
-.tag-finder .page-title .status.error {
-    color: red;
-}
-
 .finder-col {
     flex-basis: 48%;
     padding: 30px 2px;
