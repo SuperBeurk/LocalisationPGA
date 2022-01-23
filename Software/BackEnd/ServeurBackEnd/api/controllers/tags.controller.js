@@ -108,11 +108,11 @@ exports.updatePositions = async (req, res, next) => {
                     status: "success"
                 });
             }
-            next(new Error("no intersection"));
+            //next(new Error("no intersection"));
         }
-        next(new Error("not in the same room"));
+        //next(new Error("not in the same room"));
     }
-    next(new Error("not 2 beacon"));
+    //next(new Error("not 2 beacon"));
 
 };
 

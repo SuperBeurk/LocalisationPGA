@@ -272,9 +272,11 @@ window.addEventListener("DOMContentLoaded", e => {
                 }
             }).then(response => {
                 Tags.liveTracking.showAllNodes();
+                Tags.liveTracking.nodes.forEach(tagNode => {
+                    tagNode.style.visibility = "hidden";
+                });
                 //calcul la nouvelle position à afficher pour chaque tag
                 response.data.Tags.forEach(tag => {
-                    Tags.liveTracking.nodes[tag.id].style.visibility = "hidden";
                     Utils.calculatePosition(Tags.liveTracking.nodes[tag.id], tag, "visible");
                 });
             });
