@@ -1,6 +1,9 @@
 const apiUrl = "http://localhost:80/"
 
 const Utils = {
+    /*
+        Méthode qui génère une couleure hexadécimal aléatoire en fonction d'une chaîne de caractère
+     */
     stringToColor: str => {
         let hash = 0;
         for (let i = 0; i < str.length; i++) {
@@ -12,6 +15,46 @@ const Utils = {
             color += ('00' + value.toString(16)).substr(-2);
         }
         return color;
+    },
+    calculatePosition: (node, data, visibility = "hidden") => {
+        if (data.room === 0)//320
+        {
+            //Longueur
+            //11.30m qui doivent aller de 29.6% à 41.2% en largeur ==>posX * 1.03 +29.6
+            var calcPosX = data.posX * 1.03 + 29.6;
+            if (calcPosX > 41.2) {
+                calcPosX = 41.2;
+            }
+            node.style.left = calcPosX + "%";
+
+            //Largeur
+            //11m qui doivent aller de 0% à 49% ==> posY * 49/11 = 4.5
+            var calcPosY = data.posY * 4.7;
+            if (calcPosY > 49) {
+                calcPosY = 49;
+            }
+            node.style.bottom = calcPosY + "%";
+            node.style.visibility = visibility;
+        } else if (data.room === 1)//319
+        {
+            //Longueur
+            //11.30m qui doivent aller de 29.6% à 41.2% en largeur ==>posX * 1.03 +29.6
+            var calcPosX = data.posX * 1.03 + 41.2;
+            if (calcPosX > 50.5) {
+                calcPosX = 50.5;
+            }
+            node.style.left = calcPosX + "%";
+
+            //Largeur
+            //11m qui doivent aller de 0% à 49% ==> posY * 49/11 = 4.5
+            var calcPosY = data.posY * 4.7;
+            if (calcPosY > 49) {
+                calcPosY = 49;
+            }
+            node.style.bottom = calcPosY + "%";
+            node.style.visibility = visibility;
+
+        }
     }
 };
 
@@ -25,44 +68,7 @@ const Beacons = {
         span.innerText = "Beacon no: " + beacon.id;
         div.appendChild(span);
 
-        if (beacon.room === 0)//320
-        {
-            //Longueur
-            //11.30m qui doivent aller de 29.6% à 41.2% en largeur ==>posX * 1.03 +29.6
-            var calcPosX = beacon.posX * 1.03 + 29.6;
-            if (calcPosX > 41.2) {
-                calcPosX = 41.2;
-            }
-            div.style.left = calcPosX + "%";
-
-            //Largeur
-            //11m qui doivent aller de 0% à 49% ==> posY * 49/11 = 4.5
-            var calcPosY = beacon.posY * 4.7;
-            if (calcPosY > 49) {
-                calcPosY = 49;
-            }
-            div.style.bottom = calcPosY + "%";
-            div.style.visibility = "hidden";
-        } else if (beacon.room === 1)//319
-        {
-            //Longueur
-            //11.30m qui doivent aller de 29.6% à 41.2% en largeur ==>posX * 1.03 +29.6
-            var calcPosX = beacon.posX * 1.03 + 41.2;
-            if (calcPosX > 50.5) {
-                calcPosX = 50.5;
-            }
-            div.style.left = calcPosX + "%";
-
-            //Largeur
-            //11m qui doivent aller de 0% à 49% ==> posY * 49/11 = 4.5
-            var calcPosY = beacon.posY * 4.7;
-            if (calcPosY > 49) {
-                calcPosY = 49;
-            }
-            div.style.bottom = calcPosY + "%";
-            div.style.visibility = "hidden";
-
-        }
+        Utils.calculatePosition(div, beacon);
 
         return div;
     }
@@ -80,42 +86,7 @@ const Tags = {
             div.appendChild(span);
         }
 
-        if (tag.room === 0)//320
-        {
-            //Longueur
-            //11.30m qui doivent aller de 29.6% à 41.2% en largeur ==>posX * 1.03 +29.6
-            var calcPosX = tag.posX * 1.03 + 29.6;
-            if (calcPosX > 41.2) {
-                calcPosX = 41.2;
-            }
-            div.style.left = calcPosX + "%";
-
-            //Largeur
-            //11m qui doivent aller de 0% à 49% ==> posY * 49/11 = 4.5
-            var calcPosY = tag.posY * 4.7;
-            if (calcPosY > 49) {
-                calcPosY = 49;
-            }
-            div.style.bottom = calcPosY + "%";
-            div.style.visibility = "hidden";
-        } else if (tag.room === 1) {
-            //Longueur
-            //11.30m qui doivent aller de 29.6% à 41.2% en largeur ==>posX * 1.03 +29.6
-            var calcPosX = tag.posX * 1.03 + 41.2;
-            if (calcPosX > 50.5) {
-                calcPosX = 50.5;
-            }
-            div.style.left = calcPosX + "%";
-
-            //Largeur
-            //11m qui doivent aller de 0% à 49% ==> posY * 49/11 = 4.5
-            var calcPosY = tag.posY * 4.7;
-            if (calcPosY > 49) {
-                calcPosY = 49;
-            }
-            div.style.bottom = calcPosY + "%";
-            div.style.visibility = "hidden";
-        } //319
+        Utils.calculatePosition(div, tag);
 
         return div;
     },
@@ -154,10 +125,6 @@ window.addEventListener("DOMContentLoaded", e => {
         $('#selectBeacons').select2();
         $('#selectTags').on("select2:select", function (e) {
             Tags.active.push(parseInt(e.params.data.id));
-
-            if (selectedFilter === 1) {
-
-            }
         });
         $('#selectTags').on("select2:unselect", function (e) {
             Tags.liveTracking.nodes[parseInt(e.params.data.id)].style.visibility = "hidden";
@@ -197,43 +164,7 @@ window.addEventListener("DOMContentLoaded", e => {
                     planElementsContainer.appendChild(tagNode);
                     Tags.history.nodes[position.id].push(tagNode);
 
-                    if (position.room === 0)//320
-                    {
-                        //Longueur
-                        //11.30m qui doivent aller de 29.6% à 41.2% en largeur ==>posX * 1.03 +29.6
-                        var calcPosX = position.posX * 1.03 + 29.6;
-                        if (calcPosX > 41.2) {
-                            calcPosX = 41.2;
-                        }
-                        tagNode.style.left = calcPosX + "%";
-
-                        //Largeur
-                        //11m qui doivent aller de 0% à 49% ==> posY * 49/11 = 4.5
-                        var calcPosY = position.posY * 4.7;
-                        if (calcPosY > 49) {
-                            calcPosY = 49;
-                        }
-                        tagNode.style.bottom = calcPosY + "%";
-                        tagNode.style.visibility = "visible";
-                    } else if (tag.room === 1)//319
-                    {
-                        //Longueur
-                        //11.30m qui doivent aller de 29.6% à 41.2% en largeur ==>posX * 1.03 +29.6
-                        var calcPosX = position.posX * 1.03 + 41.2;
-                        if (calcPosX > 50.5) {
-                            calcPosX = 50.5;
-                        }
-                        tagNode.style.left = calcPosX + "%";
-
-                        //Largeur
-                        //11m qui doivent aller de 0% à 49% ==> posY * 49/11 = 4.5
-                        var calcPosY = position.posY * 4.7;
-                        if (calcPosY > 49) {
-                            calcPosY = 49;
-                        }
-                        tagNode.style.bottom = calcPosY + "%";
-                        tagNode.style.visibility = "visible";
-                    }
+                    Utils.calculatePosition(tagNode, position, "visible");
                 });
             });
         });
@@ -254,47 +185,11 @@ window.addEventListener("DOMContentLoaded", e => {
             Tags.history.hideAllNodes();
             Tags.liveTracking.showAllNodes();
 
-            /*Tags.liveTracking.nodes.forEach(tagNode => {
+            Tags.liveTracking.nodes.forEach(tagNode => {
                 tagNode.style.visibility = "hidden";
-            });*/
+            });
             response.data.Tags.forEach(tag => {
-                if (tag.room === 0)//320
-                {
-                    //Longueur
-                    //11.30m qui doivent aller de 29.6% à 41.2% en largeur ==>posX * 1.03 +29.6
-                    var calcPosX = tag.posX * 1.03 + 29.6;
-                    if (calcPosX > 41.2) {
-                        calcPosX = 41.2;
-                    }
-                    Tags.liveTracking.nodes[tag.id].style.left = calcPosX + "%";
-
-                    //Largeur
-                    //11m qui doivent aller de 0% à 49% ==> posY * 49/11 = 4.5
-                    var calcPosY = tag.posY * 4.7;
-                    if (calcPosY > 49) {
-                        calcPosY = 49;
-                    }
-                    Tags.liveTracking.nodes[tag.id].style.bottom = calcPosY + "%";
-                    Tags.liveTracking.nodes[tag.id].style.visibility = "visible";
-                } else if (tag.room === 1)//319
-                {
-                    //Longueur
-                    //11.30m qui doivent aller de 29.6% à 41.2% en largeur ==>posX * 1.03 +29.6
-                    var calcPosX = tag.posX * 1.03 + 41.2;
-                    if (calcPosX > 50.5) {
-                        calcPosX = 50.5;
-                    }
-                    Tags.liveTracking.nodes[tag.id].style.left = calcPosX + "%";
-
-                    //Largeur
-                    //11m qui doivent aller de 0% à 49% ==> posY * 49/11 = 4.5
-                    var calcPosY = tag.posY * 4.7;
-                    if (calcPosY > 49) {
-                        calcPosY = 49;
-                    }
-                    Tags.liveTracking.nodes[tag.id].style.bottom = calcPosY + "%";
-                    Tags.liveTracking.nodes[tag.id].style.visibility = "visible";
-                }
+                Utils.calculatePosition(Tags.liveTracking.nodes[tag.id], tag, "visible");
             });
         });
     }, 500);
@@ -362,43 +257,7 @@ window.addEventListener("DOMContentLoaded", e => {
                 });
                 response.data.Tags.forEach(tag => {
                     Tags.liveTracking.nodes[tag.id].style.visibility = "hidden";
-                    if (tag.room === 0)//320
-                    {
-                        //Longueur
-                        //11.30m qui doivent aller de 29.6% à 41.2% en largeur ==>posX * 1.03 +29.6
-                        var calcPosX = tag.posX * 1.03 + 29.6;
-                        if (calcPosX > 41.2) {
-                            calcPosX = 41.2;
-                        }
-                        Tags.liveTracking.nodes[tag.id].style.left = calcPosX + "%";
-
-                        //Largeur
-                        //11m qui doivent aller de 0% à 49% ==> posY * 49/11 = 4.5
-                        var calcPosY = tag.posY * 4.7;
-                        if (calcPosY > 49) {
-                            calcPosY = 49;
-                        }
-                        Tags.liveTracking.nodes[tag.id].style.bottom = calcPosY + "%";
-                        Tags.liveTracking.nodes[tag.id].style.visibility = "visible";
-                    } else if (tag.room === 1)//319
-                    {
-                        //Longueur
-                        //11.30m qui doivent aller de 29.6% à 41.2% en largeur ==>posX * 1.03 +29.6
-                        var calcPosX = tag.posX * 1.03 + 41.2;
-                        if (calcPosX > 50.5) {
-                            calcPosX = 50.5;
-                        }
-                        Tags.liveTracking.nodes[tag.id].style.left = calcPosX + "%";
-
-                        //Largeur
-                        //11m qui doivent aller de 0% à 49% ==> posY * 49/11 = 4.5
-                        var calcPosY = tag.posY * 4.7;
-                        if (calcPosY > 49) {
-                            calcPosY = 49;
-                        }
-                        Tags.liveTracking.nodes[tag.id].style.bottom = calcPosY + "%";
-                        Tags.liveTracking.nodes[tag.id].style.visibility = "visible";
-                    }
+                    Utils.calculatePosition(Tags.liveTracking.nodes[tag.id], tag, "visible");
                 });
             });
         };

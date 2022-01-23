@@ -27,11 +27,11 @@ npm install
 ### 2.5 Add existing tags and beacons to db (if you don't have them)
 ```bash
 cd LocalisationPGA/Software/BackEnd/ServeurBackEnd/api
-npm run configDB.js
+node .\configDB.js
 ```
 ### 3. Run the solution
 ```bash
-npm run start
+node .\app.js
 ```
 ### 4. Open the web page
 ```bash
