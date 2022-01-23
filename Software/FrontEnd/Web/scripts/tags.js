@@ -17,7 +17,7 @@ const Utils = {
         return color;
     },
     /*
-        Method to display our tag and beacon depending on posx,y and room information
+        méthode pour calculer la nouvelle position à afficher
      */
     calculatePosition: (node, data, visibility = "hidden") => {
         if (data.room === 0)//320
@@ -63,7 +63,9 @@ const Utils = {
 
 const Beacons = {
     nodes: [],
+    // Crée un noeud html pour représenter graphiquement un beacon
     createNode: beacon => {
+        // Crée un noeud div avec comme class List beacon
         const div = Object.assign(document.createElement("div"), {classList: "beacon"});
         div.style.backgroundColor = Utils.stringToColor("beacon" + beacon.id * 100);
 
@@ -79,7 +81,9 @@ const Beacons = {
 
 const Tags = {
     active: [],
+    // Crée un noeud html pour représenter graphiquement un tag
     createNode: (tag, disableDescription) => {
+        // Crée un noeud div avec comme class List tag
         const div = Object.assign(document.createElement("div"), {classList: "tag"});
         div.style.backgroundColor = Utils.stringToColor("tag" + tag.id * 100);
 
@@ -93,6 +97,7 @@ const Tags = {
 
         return div;
     },
+    //Méthode et variable utile pour le live tracking
     liveTracking: {
         nodes: [],
         showAllNodes: () => {
@@ -108,6 +113,7 @@ const Tags = {
             });
         }
     },
+    //méthode et variables utiles pour l'historique
     history: {
         nodes: {},
         hideAllNodes: () => {
@@ -117,16 +123,17 @@ const Tags = {
         },
     }
 };
-//When a client open our window
+//Quand un client ouvre une fenêtre
 window.addEventListener("DOMContentLoaded", e => {
-    let selectedFilter = null;
-
     let intervalLiveTracking;
 
     //Textbox things
     $(document).ready(function () {
+        //Initialise la librairie select2 pour les "entrée" tag et beacon
         $('#selectTags').select2();
         $('#selectBeacons').select2();
+
+
         $('#selectTags').on("select2:select", function (e) {
             Tags.active.push(parseInt(e.params.data.id));
         });
@@ -153,12 +160,13 @@ window.addEventListener("DOMContentLoaded", e => {
                 filter: e.target.value
             },
             paramsSerializer: params => {
+                // Pour autoriser l'envoie d'objet JSON en paramètre
                 return window.Qs.stringify(params)
             }
         }).then(response => {
             Tags.liveTracking.hideAllNodes();
             Tags.history.hideAllNodes();
-
+            //pour chaque tag sélectionner pour le tag history, on créer un nouveau noeud tag, et calcul la position
             Object.values(response.data.TagHistory[0]).forEach(tag => {
                 tag.forEach((position, i) => {
                     if (!Tags.history.nodes[position.id]) {
@@ -174,6 +182,7 @@ window.addEventListener("DOMContentLoaded", e => {
         });
     });
 
+    //Polling pour le live tracking
     intervalLiveTracking = setInterval(() => {
         if (Tags.active.length === 0) return;
 
@@ -192,6 +201,7 @@ window.addEventListener("DOMContentLoaded", e => {
             Tags.liveTracking.nodes.forEach(tagNode => {
                 tagNode.style.visibility = "hidden";
             });
+            // For each tag in the response, we calculate the position
             response.data.Tags.forEach(tag => {
                 Utils.calculatePosition(Tags.liveTracking.nodes[tag.id], tag, "visible");
             });
@@ -199,7 +209,7 @@ window.addEventListener("DOMContentLoaded", e => {
     }, 500);
 
     const planElementsContainer = document.getElementById("planElementsContainer");
-    //get all existing beacon and create the nodes
+    //Get tous les beacons existants et crée les noeuds
     const drawBeaconsOnPlan = () => {
         axios.get(apiUrl + "beacons").then(response => {
             const beacons = response.data.Beacons;
@@ -208,6 +218,7 @@ window.addEventListener("DOMContentLoaded", e => {
                 Beacons.nodes[beacon.id] = Beacons.createNode(beacon);
                 planElementsContainer.appendChild(Beacons.nodes[beacon.id]);
 
+                //crée un noeud optionnel avec beacon id comme valeur et un text approprié
                 const option = Object.assign(document.createElement("option"), {
                     value: beacon.id,
                     innerText: "Beacon no: " + beacon.id
@@ -216,7 +227,7 @@ window.addEventListener("DOMContentLoaded", e => {
             });
         });
     };
-    //get all existing beacon and create the nodes
+    //Get tous les tags existants et crée les noeuds
     const drawTagsOnPlan = () => {
         axios.get(apiUrl + "tags").then(response => {
             const tags = response.data.Tags;
@@ -225,6 +236,7 @@ window.addEventListener("DOMContentLoaded", e => {
                 Tags.liveTracking.nodes[tag.id] = Tags.createNode(tag);
                 planElementsContainer.appendChild(Tags.liveTracking.nodes[tag.id]);
 
+                //crée un noeud optionnel avec tag id comme valeur et un text approprié
                 const option = Object.assign(document.createElement("option"), {
                     value: tag.id,
                     innerText: "Tag no: " + tag.id
@@ -238,7 +250,6 @@ window.addEventListener("DOMContentLoaded", e => {
 
     const selectSpecificTime = document.getElementById("selectSpecificTime");
     selectSpecificTime.addEventListener("change", () => {
-        selectedFilter = 2
         inputSpecificTime.classList.remove("disable");
         clearInterval(intervalLiveTracking);
     });
@@ -247,10 +258,10 @@ window.addEventListener("DOMContentLoaded", e => {
     const selectLiveTracking = document.getElementById("selectLiveTracking");
     selectLiveTracking.addEventListener("change", () => {
         const liveTrackingRequest = () => {
-            //remove tag history node form display
+            //Enleve les tags history du display
             Tags.history.hideAllNodes();
 
-            //if no tag selected return
+            //si aucun tag séléctionner ==> return
             if (Tags.active.length === 0) return;
 
             //http request
@@ -261,7 +272,7 @@ window.addEventListener("DOMContentLoaded", e => {
                 }
             }).then(response => {
                 Tags.liveTracking.showAllNodes();
-                //calculate position and display tag
+                //calcul la nouvelle position à afficher pour chaque tag
                 response.data.Tags.forEach(tag => {
                     Tags.liveTracking.nodes[tag.id].style.visibility = "hidden";
                     Utils.calculatePosition(Tags.liveTracking.nodes[tag.id], tag, "visible");
@@ -269,12 +280,12 @@ window.addEventListener("DOMContentLoaded", e => {
             });
         };
 
+        // Start the interval
         intervalLiveTracking = setInterval(() => {
             liveTrackingRequest();
         }, 500);
         liveTrackingRequest();
 
-        selectedFilter = 1
         inputSpecificTime.classList.add("disable");
     });
 });
