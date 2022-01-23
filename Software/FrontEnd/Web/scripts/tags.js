@@ -16,6 +16,9 @@ const Utils = {
         }
         return color;
     },
+    /*
+        Method to display our tag and beacon depending on posx,y and room information
+     */
     calculatePosition: (node, data, visibility = "hidden") => {
         if (data.room === 0)//320
         {
@@ -114,12 +117,13 @@ const Tags = {
         },
     }
 };
-
+//When a client open our window
 window.addEventListener("DOMContentLoaded", e => {
     let selectedFilter = null;
 
     let intervalLiveTracking;
 
+    //Textbox things
     $(document).ready(function () {
         $('#selectTags').select2();
         $('#selectBeacons').select2();
@@ -138,11 +142,11 @@ window.addEventListener("DOMContentLoaded", e => {
         });
     });
 
+
     const inputSpecificTime = document.getElementById("inputSpecificTime");
     inputSpecificTime.addEventListener("keypress", e => {
         if (e.key !== 'Enter') return;
 
-        // TODO : no uppercase in url
         axios.get("http://localhost/tags/get/historyPositions", {
             params: {
                 tags: Tags.active,
@@ -195,6 +199,7 @@ window.addEventListener("DOMContentLoaded", e => {
     }, 500);
 
     const planElementsContainer = document.getElementById("planElementsContainer");
+    //get all existing beacon and create the nodes
     const drawBeaconsOnPlan = () => {
         axios.get(apiUrl + "beacons").then(response => {
             const beacons = response.data.Beacons;
@@ -211,6 +216,7 @@ window.addEventListener("DOMContentLoaded", e => {
             });
         });
     };
+    //get all existing beacon and create the nodes
     const drawTagsOnPlan = () => {
         axios.get(apiUrl + "tags").then(response => {
             const tags = response.data.Tags;
@@ -237,13 +243,17 @@ window.addEventListener("DOMContentLoaded", e => {
         clearInterval(intervalLiveTracking);
     });
 
+    //live Tracking
     const selectLiveTracking = document.getElementById("selectLiveTracking");
     selectLiveTracking.addEventListener("change", () => {
         const liveTrackingRequest = () => {
+            //remove tag history node form display
             Tags.history.hideAllNodes();
 
+            //if no tag selected return
             if (Tags.active.length === 0) return;
 
+            //http request
             axios.get("http://localhost/tags/get/positions", {
                 params: {
                     tags: Tags.active,
@@ -251,10 +261,7 @@ window.addEventListener("DOMContentLoaded", e => {
                 }
             }).then(response => {
                 Tags.liveTracking.showAllNodes();
-
-                Tags.liveTracking.nodes.forEach(tagNode => {
-                    tagNode.style.visibility = "hidden";
-                });
+                //calculate position and display tag
                 response.data.Tags.forEach(tag => {
                     Tags.liveTracking.nodes[tag.id].style.visibility = "hidden";
                     Utils.calculatePosition(Tags.liveTracking.nodes[tag.id], tag, "visible");
